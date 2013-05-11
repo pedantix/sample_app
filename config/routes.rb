@@ -1,12 +1,9 @@
 SampleApp::Application.routes.draw do
   
-  #Static way of routing
-#  get "static_pages/home"
-#  get "static_pages/help"
-#  get "static_pages/about"
-#  get "static_pages/contact"
+  #dynamic resources
+  resources :users
 
-  #dynamic routing
+  #dynamic routing of static pages
   root to: 'static_pages#home'
 
   match '/help',    to: 'static_pages#help'
