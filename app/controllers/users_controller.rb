@@ -8,10 +8,20 @@ class UsersController < ApplicationController
 	end
 
 	def new
+      if signed_in?
+        redirect_to root_path, :notice => "Already Signed In!"
+        return
+      end
+
 		@user = User.new
  	end
 
  	def create 
+      if signed_in?
+        redirect_to root_path, :notice => "Already Signed In!"
+        return
+      end
+
 	  	@user = User.new(params[:user])
   		if @user.save
   			flash[:success] = "Welcome to the Sample App!"
@@ -39,9 +49,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
-    redirect_to users_path
+    user_to_destroy = User.find(params[:id])
+    if !current_user?(user_to_destroy)
+      user_to_destroy.destroy
+      flash[:success] = "User destroyed."
+      redirect_to users_path
+    end
   end
 
 private
@@ -60,5 +73,6 @@ private
   def admin_user
     redirect_to(root_path) unless current_user.admin?
   end
+
 end
 
