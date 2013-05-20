@@ -5,7 +5,8 @@ class UsersController < ApplicationController
   before_filter :admin_user,      only: :destroy
 	def show
 		@user = User.find(params[:id])
-	end
+	  @microposts =@user.microposts.paginate(page: params[:page])
+  end
 
 	def new
       if signed_in?
